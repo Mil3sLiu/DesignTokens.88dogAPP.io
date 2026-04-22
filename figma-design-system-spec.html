@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>88dog APP Design Tokens Spec</title>
+  <style>
+    :root {
+      --font-family-base: "PingFang SC", "Microsoft YaHei", "Inter", sans-serif;
+      --font-family-number: "Inter", "PingFang SC", sans-serif;
+
+      --weight-regular: 400;
+      --weight-medium: 500;
+      --weight-semibold: 600;
+      --weight-bold: 700;
+      --weight-heavy: 800;
+
+      --n50: #f7f8fa;
+      --n100: #f0f2f6;
+      --n200: #d8dce3;
+      --n300: #b8c0cc;
+      --n400: #9099a8;
+      --n500: #6b7380;
+      --n600: #4c525c;
+      --n700: #353940;
+      --n800: #242426;
+      --n900: #151414;
+
+      --primary: #face66;
+      --success: #4cc38a;
+      --warning: #f3b63f;
+      --error: #e86a6a;
+      --info: #5fa8ff;
+
+      --text-primary: var(--n100);
+      --text-secondary: var(--n300);
+      --text-muted: var(--n500);
+      --text-inverse: var(--n900);
+
+      --bg-base: var(--n900);
+      --bg-elevated: var(--n800);
+      --bg-overlay: rgba(21, 20, 20, 0.9);
+      --surface-default: var(--n800);
+      --surface-card: rgba(21, 20, 20, 0.9);
+
+      --border-default: var(--n700);
+      --border-strong: var(--n500);
+      --border-focus: var(--primary);
+      --border-error: var(--error);
+
+      --icon-default: var(--n200);
+      --icon-active: var(--primary);
+      --icon-disabled: var(--n600);
+
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+
+      --space-2: 2px;
+      --space-4: 4px;
+      --space-8: 8px;
+      --space-12: 12px;
+      --space-16: 16px;
+      --space-24: 24px;
+      --space-32: 32px;
+      --space-40: 40px;
+      --space-48: 48px;
+
+      --opacity-disabled: 0.5;
+      --opacity-pressed: 0.88;
+      --opacity-overlay: 0.9;
+
+      --shadow-card: 0 4px 8px rgba(0, 0, 0, 0.25), 0 15px 15px rgba(0, 0, 0, 0.21), 0 33px 20px rgba(0, 0, 0, 0.13);
+
+      --display-sm: 64px;
+      --display-md: 80px;
+      --display-lg: 96px;
+
+      --title-sm: 32px;
+      --title-md: 40px;
+      --title-lg: 48px;
+
+      --body-sm: 20px;
+      --body-md: 24px;
+      --body-lg: 32px;
+
+      --caption-sm: 14px;
+      --caption-md: 16px;
+      --caption-lg: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 10% 0%, #1e1f24 0%, var(--bg-base) 45%, #0f0f11 100%);
+      color: var(--text-primary);
+      font-family: var(--font-family-base);
+      line-height: 1.5;
+    }
+
+    .container { max-width: 1240px; margin: 0 auto; padding: 40px 24px 80px; }
+    .header { margin-bottom: 32px; }
+    .toolbar {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .tool-btn {
+      border: 1px solid var(--border-default);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      font-size: var(--caption-md);
+      cursor: pointer;
+    }
+    .tool-btn:hover { border-color: var(--border-strong); }
+    .tool-btn.primary {
+      border-color: var(--primary);
+      box-shadow: inset 0 -2px 0 var(--primary);
+    }
+    .tool-btn.success {
+      border-color: var(--success);
+      box-shadow: inset 0 -2px 0 var(--success);
+    }
+    .eyebrow {
+      color: var(--primary);
+      font-size: var(--caption-md);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+    .hero {
+      font-size: clamp(38px, 6vw, var(--display-md));
+      font-weight: var(--weight-heavy);
+      margin: 0;
+      line-height: 1.1;
+    }
+    .sub {
+      margin-top: 12px;
+      color: var(--text-secondary);
+      font-size: var(--body-md);
+      max-width: 900px;
+    }
+
+    .section {
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: var(--title-sm);
+      line-height: 1.2;
+    }
+    .grid { display: grid; gap: 12px; }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .chip {
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      font-size: var(--caption-md);
+    }
+
+    .type-line { padding: 10px 0; border-bottom: 1px dashed var(--border-default); }
+    .type-line:last-child { border-bottom: none; }
+    .type-meta { color: var(--text-muted); font-size: var(--caption-sm); }
+
+    .swatch {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      background: var(--bg-elevated);
+    }
+    .swatch-color { height: 56px; }
+    .swatch-meta { padding: 10px; font-size: var(--caption-sm); color: var(--text-secondary); }
+
+    .state-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      min-height: 48px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-default);
+      background: linear-gradient(90deg, rgba(36,36,38,.5), rgba(36,36,38,.5));
+      color: var(--text-primary);
+      padding: 0 20px;
+      font-size: var(--body-md);
+      font-weight: var(--weight-bold);
+      cursor: pointer;
+    }
+    .btn-primary {
+      border-color: var(--primary);
+      box-shadow: inset 0 -3px 0 var(--primary);
+    }
+    .btn-danger { border-color: var(--error); color: #ffd6d6; }
+    .btn.pressed { opacity: var(--opacity-pressed); transform: translateY(1px); }
+    .btn.focused { outline: 2px solid color-mix(in oklab, var(--border-focus) 60%, transparent); outline-offset: 2px; }
+    .btn.disabled { opacity: var(--opacity-disabled); pointer-events: none; }
+
+    .field {
+      height: 56px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-default);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      font-size: var(--body-sm);
+    }
+    .field.error { border-color: var(--border-error); }
+    .field.disabled { opacity: var(--opacity-disabled); }
+
+    .list-cell {
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      background: var(--bg-elevated);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tabbar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .tab {
+      padding: 12px;
+      text-align: center;
+      color: var(--text-secondary);
+      border-right: 1px solid var(--border-default);
+      background: var(--bg-elevated);
+    }
+    .tab:last-child { border-right: none; }
+    .tab.active {
+      color: var(--primary);
+      box-shadow: inset 0 -3px 0 var(--primary);
+    }
+
+    .sheet {
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      padding: 16px;
+      background: var(--surface-default);
+    }
+    .toast {
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid;
+      font-size: var(--caption-md);
+    }
+    .toast.success { background: rgba(76,195,138,.16); border-color: var(--success); }
+    .toast.error { background: rgba(232,106,106,.16); border-color: var(--error); }
+    .toast.warning { background: rgba(243,182,63,.16); border-color: var(--warning); }
+
+    .icon-demo {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-default);
+      display: grid;
+      place-items: center;
+      background: var(--bg-elevated);
+      font-size: 22px;
+    }
+
+    .card {
+      border: 1px solid var(--border-default);
+      background: var(--surface-card);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+    }
+    .card h3 {
+      margin: 10px 0 6px;
+      font-size: var(--body-md);
+    }
+    .card p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: var(--caption-md);
+    }
+
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .note { color: var(--text-muted); font-size: var(--caption-sm); margin-top: 10px; }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      margin-top: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+      background: var(--bg-elevated);
+    }
+    th, td {
+      border-bottom: 1px solid var(--border-default);
+      padding: 10px 12px;
+      text-align: left;
+      font-size: var(--caption-md);
+      vertical-align: top;
+    }
+    th {
+      color: var(--text-primary);
+      background: color-mix(in oklab, var(--bg-elevated) 75%, var(--n900));
+    }
+    td { color: var(--text-secondary); }
+    tr:last-child td { border-bottom: none; }
+    .export-log {
+      margin-top: 12px;
+      color: var(--text-secondary);
+      font-size: var(--caption-sm);
+    }
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .filter-input, .filter-select {
+      height: 36px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-default);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      padding: 0 10px;
+      font-size: var(--caption-md);
+    }
+    .checklist {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .check-item {
+      border: 1px solid var(--border-default);
+      background: var(--bg-elevated);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      color: var(--text-secondary);
+      font-size: var(--caption-md);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .check-item input {
+      margin-top: 3px;
+      accent-color: var(--primary);
+    }
+
+    body[data-theme="light"] {
+      --text-primary: var(--n800);
+      --text-secondary: var(--n600);
+      --text-muted: var(--n500);
+      --text-inverse: var(--n50);
+      --bg-base: var(--n50);
+      --bg-elevated: #ffffff;
+      --bg-overlay: rgba(247, 248, 250, 0.9);
+      --surface-default: #ffffff;
+      --surface-card: #ffffff;
+      --border-default: var(--n200);
+      --border-strong: var(--n400);
+      --icon-default: var(--n600);
+      --icon-disabled: var(--n400);
+      --shadow-card: 0 3px 8px rgba(0, 0, 0, 0.08), 0 10px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (max-width: 900px) {
+      .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
+      .tabbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .checklist { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="eyebrow">88dog APP Design System</div>
+      <h1 class="hero">Design Token & Component Spec</h1>
+      <p class="sub">基于深色工业风 + 金色强调语义，覆盖 Typography、Color、State 与 8 类核心组件，作为 UI 统一实现与验收基线。</p>
+      <div class="toolbar">
+        <button class="tool-btn" id="themeToggleBtn" type="button">切换为 Light 模式</button>
+        <button class="tool-btn primary" id="exportJsonBtn" type="button">导出 Token JSON</button>
+        <button class="tool-btn success" id="copyCssBtn" type="button">复制 CSS Variables</button>
+        <button class="tool-btn success" id="copyTailwindBtn" type="button">复制 Tailwind Tokens</button>
+        <button class="tool-btn success" id="copyStyleDictBtn" type="button">复制 Style Dictionary</button>
+      </div>
+      <div class="export-log" id="exportLog">提示：导出会自动下载 `88dog-design-tokens.json`。</div>
+    </header>
+
+    <section class="section">
+      <h2>Typography</h2>
+      <div class="grid cols-2">
+        <div class="type-line">
+          <div style="font-size:var(--display-sm);font-weight:var(--weight-heavy);line-height:1.1;">Display / 64</div>
+          <div class="type-meta mono">fontSize 64, weight 800, lineHeight 1.1, letterSpacing 0</div>
+        </div>
+        <div class="type-line">
+          <div style="font-size:var(--title-sm);font-weight:var(--weight-semibold);line-height:1.5;">Title / 32</div>
+          <div class="type-meta mono">fontSize 32, weight 600, lineHeight 1.5, letterSpacing 0</div>
+        </div>
+        <div class="type-line">
+          <div style="font-size:var(--body-md);font-weight:var(--weight-medium);line-height:1.5;">Body / 24 采购次数 5 次，金额 ￥32.6</div>
+          <div class="type-meta mono">fontSize 24, weight 500, lineHeight 1.5, letterSpacing 0</div>
+        </div>
+        <div class="type-line">
+          <div style="font-size:var(--caption-md);font-weight:var(--weight-regular);line-height:1.4;">Caption / 16 更新时间 12:30:59</div>
+          <div class="type-meta mono">fontSize 16, weight 400, lineHeight 1.4, letterSpacing 0.2</div>
+        </div>
+      </div>
+      <p class="note">混排建议：中文用 PingFang SC；数字/金额/时间可切换 Inter 并启用等宽数字，便于对齐与跳变控制。</p>
+    </section>
+
+    <section class="section">
+      <h2>Color</h2>
+      <div class="grid cols-4">
+        <div class="swatch"><div class="swatch-color" style="background:var(--primary)"></div><div class="swatch-meta">Primary<br><span class="mono">#FACE66</span></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--success)"></div><div class="swatch-meta">Success<br><span class="mono">#4CC38A</span></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--warning)"></div><div class="swatch-meta">Warning<br><span class="mono">#F3B63F</span></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--error)"></div><div class="swatch-meta">Error<br><span class="mono">#E86A6A</span></div></div>
+      </div>
+      <div class="grid cols-4" style="margin-top:12px;">
+        <div class="swatch"><div class="swatch-color" style="background:var(--n100)"></div><div class="swatch-meta">N100</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--n300)"></div><div class="swatch-meta">N300</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--n500)"></div><div class="swatch-meta">N500</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--n700)"></div><div class="swatch-meta">N700</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--n800)"></div><div class="swatch-meta">N800</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--n900)"></div><div class="swatch-meta">N900</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>State</h2>
+      <div class="state-row">
+        <button class="btn btn-primary">default</button>
+        <button class="btn btn-primary pressed">pressed</button>
+        <button class="btn btn-primary focused">focused</button>
+        <button class="btn btn-primary disabled">disabled</button>
+        <button class="btn btn-danger">error</button>
+      </div>
+      <p class="note">规则：pressed 降低亮度与轻微位移；focused 使用 2px 焦点环；disabled 禁交互 + 50% 透明；error/success 使用语义色并保持文字对比。</p>
+    </section>
+
+    <section class="section">
+      <h2>Components</h2>
+      <div class="grid cols-2">
+        <div class="chip">
+          <strong>1) Button</strong><br />
+          <div class="state-row" style="margin-top:8px;">
+            <button class="btn btn-primary">主按钮</button>
+            <button class="btn">次按钮</button>
+            <button class="btn btn-danger">危险按钮</button>
+          </div>
+        </div>
+
+        <div class="chip">
+          <strong>2) Text Field</strong><br />
+          <div class="field" style="margin-top:8px;">普通输入框</div>
+          <div class="field error" style="margin-top:8px;">错误输入框</div>
+          <div class="field disabled" style="margin-top:8px;">禁用输入框</div>
+        </div>
+
+        <div class="chip">
+          <strong>3) List Cell</strong>
+          <div class="list-cell" style="margin-top:8px;"><span>单行列表项</span><span>›</span></div>
+          <div class="list-cell" style="margin-top:8px;"><span>双行列表项<br /><small style="color:var(--text-muted)">副标题描述</small></span><span>›</span></div>
+        </div>
+
+        <div class="chip">
+          <strong>4) Tab Bar</strong>
+          <div class="tabbar" style="margin-top:8px;">
+            <div class="tab active">概览</div>
+            <div class="tab">库存</div>
+            <div class="tab">战绩</div>
+            <div class="tab">我的</div>
+          </div>
+        </div>
+
+        <div class="chip">
+          <strong>5) Bottom Sheet</strong>
+          <div class="sheet" style="margin-top:8px;">
+            <div style="font-size:var(--title-sm);font-weight:var(--weight-bold)">确认采购</div>
+            <div style="color:var(--text-secondary);margin:8px 0 12px;">请选择采购数量并确认支付。</div>
+            <div class="state-row">
+              <button class="btn">取消</button>
+              <button class="btn btn-primary">确认</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chip">
+          <strong>6) Toast</strong>
+          <div class="toast success" style="margin-top:8px;">success: 操作成功</div>
+          <div class="toast error" style="margin-top:8px;">error: 操作失败</div>
+          <div class="toast warning" style="margin-top:8px;">warning: 请注意库存不足</div>
+        </div>
+
+        <div class="chip">
+          <strong>7) Icon</strong>
+          <div class="state-row" style="margin-top:8px;">
+            <div class="icon-demo" style="color:var(--icon-default)">★</div>
+            <div class="icon-demo" style="color:var(--icon-active)">★</div>
+            <div class="icon-demo" style="color:var(--icon-disabled)">★</div>
+          </div>
+        </div>
+
+        <div class="chip">
+          <strong>8) Card</strong>
+          <div class="card" style="margin-top:8px;">
+            <div style="height:90px;border-radius:4px;background:linear-gradient(120deg,#2f3642,#1e2229);"></div>
+            <h3>未开封的毁灭之手终端机</h3>
+            <p>库存 50 · 已选定 12 · ￥32.6</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Component Variant Matrix</h2>
+      <div class="filters">
+        <select class="filter-select" id="componentFilter">
+          <option value="all">全部组件</option>
+        </select>
+        <select class="filter-select" id="stateFilter">
+          <option value="all">全部状态</option>
+          <option value="default">default</option>
+          <option value="pressed">pressed</option>
+          <option value="focused">focused</option>
+          <option value="disabled">disabled</option>
+          <option value="loading">loading</option>
+          <option value="active">active</option>
+          <option value="inactive">inactive</option>
+          <option value="error">error</option>
+          <option value="selected">selected</option>
+          <option value="show">show</option>
+          <option value="hide">hide</option>
+        </select>
+        <input class="filter-input" id="keywordFilter" placeholder="搜索属性或 Variant 值" />
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>组件</th>
+              <th>核心属性</th>
+              <th>Variant 值</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody id="variantTableBody"></tbody>
+        </table>
+      </div>
+      <p class="note" id="variantCountNote">共 0 条规格</p>
+    </section>
+
+    <section class="section">
+      <h2>QA Checklist</h2>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" />颜色对比（正文）达到 4.5:1 及以上</label>
+        <label class="check-item"><input type="checkbox" />按钮/可点击区域最小高度达到 44px+</label>
+        <label class="check-item"><input type="checkbox" />所有组件 disabled 状态禁用交互且视觉降级一致</label>
+        <label class="check-item"><input type="checkbox" />Focus 环在键盘导航下可见且不被遮挡</label>
+        <label class="check-item"><input type="checkbox" />金额/时间/数字启用等宽数字并对齐</label>
+        <label class="check-item"><input type="checkbox" />Light / Dark 两套映射可读性一致</label>
+        <label class="check-item"><input type="checkbox" />组件内部圆角、间距、描边均绑定 Token</label>
+        <label class="check-item"><input type="checkbox" />Toast / 状态反馈语义色使用正确</label>
+        <label class="check-item"><input type="checkbox" />图标尺寸与线宽一致（16/20/24/32/48）</label>
+        <label class="check-item"><input type="checkbox" />组件命名与 Variant 轴命名统一规范</label>
+      </div>
+    </section>
+  </div>
+  <script>
+    (function () {
+      const themeToggleBtn = document.getElementById("themeToggleBtn");
+      const exportJsonBtn = document.getElementById("exportJsonBtn");
+      const copyCssBtn = document.getElementById("copyCssBtn");
+      const copyTailwindBtn = document.getElementById("copyTailwindBtn");
+      const copyStyleDictBtn = document.getElementById("copyStyleDictBtn");
+      const exportLog = document.getElementById("exportLog");
+      const variantTableBody = document.getElementById("variantTableBody");
+      const variantCountNote = document.getElementById("variantCountNote");
+      const componentFilter = document.getElementById("componentFilter");
+      const stateFilter = document.getElementById("stateFilter");
+      const keywordFilter = document.getElementById("keywordFilter");
+      const body = document.body;
+
+      const variantRows = [
+        { component: "Button", props: "variant, size, icon", values: "primary/secondary/danger; md/lg/xl; leading/trailing", states: "default/pressed/focused/disabled/loading" },
+        { component: "Text Field", props: "type, size, affix", values: "normal/error/disabled; md/lg; prefix/suffix", states: "default/focused/disabled/error" },
+        { component: "List Cell", props: "layout, leading, trailing", values: "single/double; none/icon/avatar; none/chevron/text", states: "default/pressed/focused/disabled" },
+        { component: "Tab Bar", props: "count, itemType", values: "2/3/4; text/iconText", states: "active/inactive/disabled" },
+        { component: "Bottom Sheet", props: "size, actions", values: "md/lg/full; singlePrimary/primarySecondary", states: "default/loading" },
+        { component: "Toast", props: "type, action", values: "success/error/warning; withAction/none", states: "show/hide" },
+        { component: "Icon", props: "size, tone", values: "16/20/24/32/48; default/active/disabled/error/success", states: "default/disabled" },
+        { component: "Card", props: "type, media, cta", values: "basic/media/stat/selectable; on/off; on/off", states: "default/pressed/focused/selected/disabled" }
+      ];
+
+      const tokenJson = {
+        color: {
+          primitive: {
+            neutral: { n50: "#f7f8fa", n100: "#f0f2f6", n200: "#d8dce3", n300: "#b8c0cc", n400: "#9099a8", n500: "#6b7380", n600: "#4c525c", n700: "#353940", n800: "#242426", n900: "#151414" },
+            brand: { primary: "#face66", success: "#4cc38a", warning: "#f3b63f", error: "#e86a6a", info: "#5fa8ff" }
+          },
+          semantic: {
+            text: { primary: "{neutral.n100}", secondary: "{neutral.n300}", muted: "{neutral.n500}" },
+            background: { base: "{neutral.n900}", elevated: "{neutral.n800}", overlay: "rgba(21,20,20,0.9)" },
+            border: { default: "{neutral.n700}", strong: "{neutral.n500}", focus: "{brand.primary}", error: "{brand.error}" },
+            icon: { default: "{neutral.n200}", active: "{brand.primary}", disabled: "{neutral.n600}" }
+          }
+        },
+        typography: {
+          family: { base: "PingFang SC, Microsoft YaHei, Inter, sans-serif", number: "Inter, PingFang SC, sans-serif" },
+          display: { sm: { fontSize: 64, lineHeight: 1.1, fontWeight: 800, letterSpacing: 0 } },
+          title: { sm: { fontSize: 32, lineHeight: 1.5, fontWeight: 600, letterSpacing: 0 } },
+          body: { md: { fontSize: 24, lineHeight: 1.5, fontWeight: 500, letterSpacing: 0 } },
+          caption: { md: { fontSize: 16, lineHeight: 1.4, fontWeight: 400, letterSpacing: 0.2 } }
+        },
+        spacing: { s2: 2, s4: 4, s8: 8, s12: 12, s16: 16, s24: 24, s32: 32, s40: 40, s48: 48 },
+        radius: { sm: 4, md: 8, lg: 12, xl: 16 },
+        opacity: { disabled: 0.5, pressed: 0.88, overlay: 0.9 }
+      };
+
+      function copyText(text, successMessage) {
+        navigator.clipboard.writeText(text).then(function () {
+          exportLog.textContent = successMessage;
+        }).catch(function () {
+          exportLog.textContent = "复制失败：浏览器权限限制，请手动复制。";
+        });
+      }
+
+      function buildCssVariables() {
+        return ":root {\n" +
+          "  --primary: #face66;\n  --success: #4cc38a;\n  --warning: #f3b63f;\n  --error: #e86a6a;\n  --info: #5fa8ff;\n" +
+          "  --n100: #f0f2f6;\n  --n300: #b8c0cc;\n  --n500: #6b7380;\n  --n700: #353940;\n  --n900: #151414;\n" +
+          "  --space-8: 8px;\n  --space-16: 16px;\n  --space-24: 24px;\n" +
+          "  --radius-sm: 4px;\n  --radius-md: 8px;\n  --radius-lg: 12px;\n}";
+      }
+
+      function buildTailwindTokens() {
+        return "export default {\n" +
+          "  theme: {\n" +
+          "    extend: {\n" +
+          "      colors: {\n" +
+          "        primary: '#face66', success: '#4cc38a', warning: '#f3b63f', error: '#e86a6a', info: '#5fa8ff',\n" +
+          "        neutral: {100:'#f0f2f6',300:'#b8c0cc',500:'#6b7380',700:'#353940',900:'#151414'}\n" +
+          "      },\n" +
+          "      borderRadius: { sm:'4px', md:'8px', lg:'12px' },\n" +
+          "      spacing: { 2:'2px',4:'4px',8:'8px',12:'12px',16:'16px',24:'24px',32:'32px',40:'40px',48:'48px' }\n" +
+          "    }\n" +
+          "  }\n" +
+          "};";
+      }
+
+      function buildStyleDictionary() {
+        return JSON.stringify({
+          color: {
+            primary: { value: "#face66" },
+            success: { value: "#4cc38a" },
+            warning: { value: "#f3b63f" },
+            error: { value: "#e86a6a" },
+            info: { value: "#5fa8ff" },
+            neutral: {
+              n100: { value: "#f0f2f6" },
+              n300: { value: "#b8c0cc" },
+              n500: { value: "#6b7380" },
+              n700: { value: "#353940" },
+              n900: { value: "#151414" }
+            }
+          },
+          spacing: {
+            s8: { value: "8px" },
+            s16: { value: "16px" },
+            s24: { value: "24px" }
+          },
+          radius: {
+            sm: { value: "4px" },
+            md: { value: "8px" },
+            lg: { value: "12px" }
+          }
+        }, null, 2);
+      }
+
+      function renderVariantTable() {
+        const c = componentFilter.value;
+        const s = stateFilter.value;
+        const q = keywordFilter.value.trim().toLowerCase();
+
+        const rows = variantRows.filter(function (row) {
+          const matchComponent = c === "all" || row.component === c;
+          const matchState = s === "all" || row.states.toLowerCase().indexOf(s) >= 0;
+          const haystack = (row.props + " " + row.values + " " + row.states).toLowerCase();
+          const matchKeyword = q === "" || haystack.indexOf(q) >= 0 || row.component.toLowerCase().indexOf(q) >= 0;
+          return matchComponent && matchState && matchKeyword;
+        });
+
+        variantTableBody.innerHTML = rows.map(function (row) {
+          return "<tr><td>" + row.component + "</td><td>" + row.props + "</td><td>" + row.values + "</td><td>" + row.states + "</td></tr>";
+        }).join("");
+        variantCountNote.textContent = "共 " + rows.length + " 条规格";
+      }
+
+      function setTheme(theme) {
+        body.setAttribute("data-theme", theme);
+        localStorage.setItem("specTheme", theme);
+        themeToggleBtn.textContent = theme === "dark" ? "切换为 Light 模式" : "切换为 Dark 模式";
+      }
+
+      const savedTheme = localStorage.getItem("specTheme") || "dark";
+      setTheme(savedTheme);
+
+      const components = variantRows.map(function (r) { return r.component; });
+      components.forEach(function (name) {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        componentFilter.appendChild(option);
+      });
+
+      renderVariantTable();
+
+      themeToggleBtn.addEventListener("click", function () {
+        const current = body.getAttribute("data-theme") || "dark";
+        setTheme(current === "dark" ? "light" : "dark");
+      });
+
+      exportJsonBtn.addEventListener("click", function () {
+        const blob = new Blob([JSON.stringify(tokenJson, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "88dog-design-tokens.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        exportLog.textContent = "导出成功：已下载 88dog-design-tokens.json";
+      });
+
+      copyCssBtn.addEventListener("click", function () {
+        copyText(buildCssVariables(), "复制成功：CSS Variables 已复制到剪贴板");
+      });
+
+      copyTailwindBtn.addEventListener("click", function () {
+        copyText(buildTailwindTokens(), "复制成功：Tailwind Tokens 已复制到剪贴板");
+      });
+
+      copyStyleDictBtn.addEventListener("click", function () {
+        copyText(buildStyleDictionary(), "复制成功：Style Dictionary 已复制到剪贴板");
+      });
+
+      componentFilter.addEventListener("change", renderVariantTable);
+      stateFilter.addEventListener("change", renderVariantTable);
+      keywordFilter.addEventListener("input", renderVariantTable);
+    })();
+  </script>
+</body>
+</html>
