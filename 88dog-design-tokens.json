@@ -1,0 +1,108 @@
+{
+  "color": {
+    "primitive": {
+      "neutral": {
+        "n50": "#f7f8fa",
+        "n100": "#f0f2f6",
+        "n200": "#d8dce3",
+        "n300": "#b8c0cc",
+        "n400": "#9099a8",
+        "n500": "#6b7380",
+        "n600": "#4c525c",
+        "n700": "#353940",
+        "n800": "#242426",
+        "n900": "#151414"
+      },
+      "brand": {
+        "primary": "#face66",
+        "success": "#4cc38a",
+        "warning": "#f3b63f",
+        "error": "#e86a6a",
+        "info": "#5fa8ff"
+      }
+    },
+    "semantic": {
+      "text": {
+        "primary": "{neutral.n100}",
+        "secondary": "{neutral.n300}",
+        "muted": "{neutral.n500}"
+      },
+      "background": {
+        "base": "{neutral.n900}",
+        "elevated": "{neutral.n800}",
+        "overlay": "rgba(21,20,20,0.9)"
+      },
+      "border": {
+        "default": "{neutral.n700}",
+        "strong": "{neutral.n500}",
+        "focus": "{brand.primary}",
+        "error": "{brand.error}"
+      },
+      "icon": {
+        "default": "{neutral.n200}",
+        "active": "{brand.primary}",
+        "disabled": "{neutral.n600}"
+      }
+    }
+  },
+  "typography": {
+    "family": {
+      "base": "PingFang SC, Microsoft YaHei, Inter, sans-serif",
+      "number": "Inter, PingFang SC, sans-serif"
+    },
+    "display": {
+      "sm": {
+        "fontSize": 64,
+        "lineHeight": 1.1,
+        "fontWeight": 800,
+        "letterSpacing": 0
+      }
+    },
+    "title": {
+      "sm": {
+        "fontSize": 32,
+        "lineHeight": 1.5,
+        "fontWeight": 600,
+        "letterSpacing": 0
+      }
+    },
+    "body": {
+      "md": {
+        "fontSize": 24,
+        "lineHeight": 1.5,
+        "fontWeight": 500,
+        "letterSpacing": 0
+      }
+    },
+    "caption": {
+      "md": {
+        "fontSize": 16,
+        "lineHeight": 1.4,
+        "fontWeight": 400,
+        "letterSpacing": 0.2
+      }
+    }
+  },
+  "spacing": {
+    "s2": 2,
+    "s4": 4,
+    "s8": 8,
+    "s12": 12,
+    "s16": 16,
+    "s24": 24,
+    "s32": 32,
+    "s40": 40,
+    "s48": 48
+  },
+  "radius": {
+    "sm": 4,
+    "md": 8,
+    "lg": 12,
+    "xl": 16
+  },
+  "opacity": {
+    "disabled": 0.5,
+    "pressed": 0.88,
+    "overlay": 0.9
+  }
+}
